@@ -8,6 +8,8 @@ const AuthorSchema = new Schema({
   date_of_birth: { type: Date },
   date_of_death: { type: Date },
 });
+
+
 // Virtual for author's full name
 AuthorSchema.virtual("name").get(function () {
     // To avoid errors in cases where an author does not have either a family name or first name
