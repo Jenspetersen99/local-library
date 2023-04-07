@@ -1,3 +1,4 @@
+const { DateTime } = require("luxon");
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -7,10 +8,6 @@ const AuthorSchema = new Schema({
   family_name: { type: String, required: true, maxLength: 100 },
   date_of_birth: { type: Date },
   date_of_death: { type: Date },
-});
-AuthorSchema.virtual("lifespan").get(function(){
-  lifespan = this.date_of_birth - this.date_of_death;
-  return lifespan;
 });
 
 // Virtual for author's full name
@@ -32,6 +29,34 @@ AuthorSchema.virtual("name").get(function () {
     // We don't use an arrow function as we'll need the this object
     return `/catalog/author/${this._id}`;
   });
+
+  // har lavet en method, lifespan med let 
+  AuthorSchema.virtual("lifespan").get(function(){
+    var lifetime_string = "";
+  
+    if (this.date_of_birth){
+      lifetime_string = DateTime.fromJSDate(this.date_of_birth).toLocaleString(
+        DateTime.DATE_MED
+      );
+    }
+    lifetime_string += " - ";
+    if (this.date_of_death){
+        lifetime_string += DateTime.fromJSDate(this.date_of_death).toLocaleString(
+          DateTime.DATE_MED
+        );
+      }
+    return lifetime_string;
+  });
+  
+
+AuthorSchema.virtual("date_of_birth_yyyy_mm_dd").get(function () {
+  return DateTime.fromJSDate(this.date_of_birth).toISODate(); // format 'YYYY-MM-DD'
+});
+
+AuthorSchema.virtual("date_of_death_yyyy_mm_dd").get(function () {
+  return DateTime.fromJSDate(this.date_of_death).toISODate(); // format 'YYYY-MM-DD'
+});
+
   
   // Export model
   module.exports = mongoose.model("Author", AuthorSchema);
