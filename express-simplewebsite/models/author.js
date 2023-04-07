@@ -8,7 +8,10 @@ const AuthorSchema = new Schema({
   date_of_birth: { type: Date },
   date_of_death: { type: Date },
 });
-
+AuthorSchema.virtual("lifespan").get(function(){
+  lifespan = this.date_of_birth - this.date_of_death;
+  return lifespan;
+});
 
 // Virtual for author's full name
 AuthorSchema.virtual("name").get(function () {

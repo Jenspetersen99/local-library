@@ -17,5 +17,5 @@ block content
       span.text-warning #{bookinstance.status}
 
   if bookinstance.status!='Available'
-    p #[strong Due back:] #{bookinstance.due_back_formatted}
-// rettede due_back til due_back_formatted, men synes ikke det gjorde en forskel
+    p #[strong Due back:] #{bookinstance.due_back}
+// rettede due_back til due_back_formatted, men synes ikke det gjorde en forskel, rettede igen
