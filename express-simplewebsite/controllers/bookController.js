@@ -238,7 +238,7 @@ exports.book_delete_post = (req, res, next) => {
   async.parallel(
     {
       book: function(callback) {
-        Book.findById(req.body.authorid)
+        Book.findById(req.body.id)
           .populate("author")
           .populate("genre")
           .exec(callback);
@@ -263,7 +263,7 @@ exports.book_delete_post = (req, res, next) => {
       }
       else {
       // book has no book_instances 
-      Book.findByIdAndRemove(req.body.id, function deletebook (err){
+      Book.findByIdAndRemove(req.body.id, function deleteBook (err){
         if (err) {
           return next(err);
         }
