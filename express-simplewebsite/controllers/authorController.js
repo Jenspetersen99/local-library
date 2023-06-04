@@ -11,11 +11,20 @@ exports.author_list = function (req, res, next) {
       if (err) {
         return next(err);
       }
+      const search = req.query.search
+      if (!search){
       //Successful, so render
       res.render("author_list", {
         title: "Author List",
         author_list: list_authors,
-      });
+      });}
+      else {
+        res.render("author_list", {
+          title: "Author List",
+          author_list: list_authors.filter(author=>author.first_name.toLowerCase().includes(search.toLowerCase())||author.family_name.toLowerCase().includes(search.toLowerCase()))
+        });
+
+      }
     });
 };
 
@@ -99,13 +108,13 @@ exports.author_create_post = [
       return;
     }
     // Data from form is valid.
-
     // Create an Author object with escaped and trimmed data.
     const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
       date_of_death: req.body.date_of_death,
+      image_path: req.file.path.replace("public", "")
     });
     author.save((err) => {
       if (err) {

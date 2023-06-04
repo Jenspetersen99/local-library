@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const multer  = require('multer');
+
 
 // Require controller modules.
 const book_controller = require("../controllers/bookController");
@@ -41,8 +43,9 @@ router.get("/books", book_controller.book_list);
 // GET request for creating Author. NOTE This must come before route for id (i.e. display author).
 router.get("/author/create", author_controller.author_create_get);
 
+const upload = multer({ dest: "public/images"});
 // POST request for creating Author.
-router.post("/author/create", author_controller.author_create_post);
+router.post("/author/create",upload.single('imageupload'), author_controller.author_create_post);
 
 // GET request to delete Author.
 router.get("/author/:id/delete", author_controller.author_delete_get);
